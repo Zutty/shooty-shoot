@@ -14,18 +14,24 @@ public class WeaponController : MonoBehaviour {
 	private Color defaultColour;
 	private float fireTimer = 0f;
 	private AudioSource audioSource;
+	private GameObject muzzleFlash;
 
 	void Start () {
 		mainCamera = GetComponentInChildren<Camera> ();
 		audioSource = GetComponent<AudioSource>();
 		defaultColour = crosshair.color;
+		muzzleFlash = transform.Find ("gun/muzzle_flash").gameObject;
+		muzzleFlash.SetActive (false);
 	}
 	
 	void Update () {
 		RaycastHit hit;
 
+		muzzleFlash.SetActive (false);
+
 		if (Input.GetButtonDown ("Fire1") && Time.time > fireTimer) {
 			audioSource.PlayOneShot (shootSound, Random.Range (.5f, 1f));
+			muzzleFlash.SetActive (true);
 		}
 
 		if (Physics.Raycast (mainCamera.ViewportPointToRay (new Vector3 (.5F, .5F, 0)), out hit)) {
